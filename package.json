@@ -1,0 +1,16 @@
+{
+  "name": "backend-nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon api/index.js"
+  },
+  "keywords": [],
+  "author": "John Serrano <jandreys15@gmail.com> (https://twitter.com/jandrey15)",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4"
+  }
+}
