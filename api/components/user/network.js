@@ -27,8 +27,8 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   controller.upsert(req.body)
-  .then(() => {
-    response.success(req, res, 'Created', 200)
+  .then((user) => {
+    response.success(req, res, `Created ${user}`, 201)
   })
   .catch(err => {
     response.error(req, res, err, 500)
