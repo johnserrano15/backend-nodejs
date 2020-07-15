@@ -35,6 +35,16 @@ router.post('/', (req, res) => {
   })
 })
 
+router.put('/', (req, res) => {
+  controller.upsert(req.body)
+  .then((user) => {
+    response.success(req, res, `Created ${user}`, 201)
+  })
+  .catch(err => {
+    response.error(req, res, err, 500)
+  })
+})
+
 router.delete('/:id', (req, res) => {
   controller.remove(req.params.id)
   .then(() => {
