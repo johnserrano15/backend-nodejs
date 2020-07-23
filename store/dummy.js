@@ -19,7 +19,7 @@ async function upsert(tabla, data) {
     db[tabla] = []
   }
   db[tabla].push(data)
-  // console.log(db)
+  console.log(db)
   return data
 }
 
