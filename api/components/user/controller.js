@@ -14,7 +14,7 @@ module.exports = function (injectedStore) {
   }
 
   function get(id) {
-    return store.get(TABLA, id);
+    return store.get(TABLA, id)
   }
 
   async function upsert(body) {
@@ -31,13 +31,13 @@ module.exports = function (injectedStore) {
 
     if (body.password || body.username) {
       await auth.upsert({
-          id: user.id,
-          username: user.username,
-          password: body.password,
+        id: user.id,
+        username: user.username,
+        password: body.password,
       })
-  }
+    }
 
-    return store.upsert(TABLA, user);
+    return store.upsert(TABLA, user)
   }
 
   function remove(id) {

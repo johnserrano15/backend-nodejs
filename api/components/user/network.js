@@ -1,5 +1,6 @@
 const express = require('express')
 
+const secure = require('./secure')
 const response = require('../../../network/response')
 const controller = require('./index')
 
@@ -36,7 +37,7 @@ router.post('/', (req, res) => {
   })
 })
 
-router.put('/', (req, res) => {
+router.put('/', secure('update'), (req, res) => {
   controller.upsert(req.body)
   .then((user) => {
     response.success(req, res, `Updated ${user.username || 'user'}`, 201)
