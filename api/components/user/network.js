@@ -39,7 +39,7 @@ router.post('/', (req, res) => {
 router.put('/', (req, res) => {
   controller.upsert(req.body)
   .then((user) => {
-    response.success(req, res, `Created ${user}`, 201)
+    response.success(req, res, `Updated ${user.username || 'user'}`, 201)
   })
   .catch(err => {
     response.error(req, res, err, 500)
