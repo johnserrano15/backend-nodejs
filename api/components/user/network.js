@@ -6,55 +6,45 @@ const controller = require('./index')
 
 const router = express.Router()
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   controller.list()
   .then((lista) => {
     response.success(req, res, lista, 200)
   })
-  .catch(err => {
-    response.error(req, res, err, 500)
-  })
+  .catch(next)
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:id', (req, res, next) => {
   controller.get(req.params.id)
   .then((user) => {
     response.success(req, res, user, 200)
   })
-  .catch(err => {
-    response.error(req, res, err, 500)
-  })
+  .catch(next)
 })
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
   controller.upsert(req.body)
   .then((user) => {
     // console.log(user)
     response.success(req, res, `Created ${user.username || 'user'}`, 201)
   })
-  .catch(err => {
-    response.error(req, res, err, 500)
-  })
+  .catch(next)
 })
 
-router.put('/', secure('update'), (req, res) => {
+router.put('/', secure('update'), (req, res, next) => {
   controller.upsert(req.body)
   .then((user) => {
     response.success(req, res, `Updated ${user.username || 'user'}`, 201)
   })
-  .catch(err => {
-    response.error(req, res, err, 500)
-  })
+  .catch(next)
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', (req, res, next) => {
   controller.remove(req.params.id)
   .then(() => {
     response.success(req, res, 'Deleted', 200)
   })
-  .catch(err => {
-    response.error(req, res, err, 500)
-  })
+  .catch(next)
 })
 
 module.exports = router
