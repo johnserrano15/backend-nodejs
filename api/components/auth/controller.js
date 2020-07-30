@@ -17,7 +17,7 @@ module.exports = function (injectedStore) {
       thrownewError('Information not valid')
     }
 
-    return auth.sign(data)
+    return auth.sign({ ...data })
   }
 
   async function upsert(data) {
