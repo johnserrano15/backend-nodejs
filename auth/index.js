@@ -24,7 +24,6 @@ const check = {
   },
   logged: function (req) {
     const decoded = decodeHeader(req)
-    console.log(decoded)
   }
 }
 

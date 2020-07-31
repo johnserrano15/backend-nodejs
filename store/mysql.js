@@ -90,10 +90,20 @@ const upsert = async (table, payload) => new Promise((resolve, reject) => {
   })
 })
 
-function query(table, query) {
+function query(table, query, join) {
+  let joinQuery = ''
+  // join = { user: 'user_to' }
+  if (join) {
+    const key = Object.keys(join)[0] // user
+    const val = join[key] // user_to
+    joinQuery = `JOIN ${key} ON ${table}.${val} = ${key}.id`
+  }
+  // console.log(joinQuery)
+
   return new Promise((resolve, reject) => {
-    connection.query(`SELECT * FROM ${table} WHERE ?`, query, (err, res) => {
+    connection.query(`SELECT * FROM ${table} ${joinQuery} WHERE ?`, query, (err, res) => {
       if (err) return reject(err)
+      if (res.length > 1) resolve(res || [])
       resolve(res[0] || null)
     })
   })
