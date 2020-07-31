@@ -13,15 +13,19 @@ function verify(token) {
 }
 
 const check = {
-  own: function(req, owner) {
+  own: function (req, owner) {
     const decoded = decodeHeader(req)
-    console.log(decoded)
-    console.log(owner)
+    // console.log(decoded)
+    // console.log(owner)
 
     if (decoded.id !== owner) {
       throw error('No puedes hacer esto', 401)
     }
   },
+  logged: function (req) {
+    const decoded = decodeHeader(req)
+    console.log(decoded)
+  }
 }
 
 function getToken(auth) {
