@@ -94,8 +94,8 @@ function query(table, query, join) {
   let joinQuery = ''
   // join = { user: 'user_to' }
   if (join) {
-    const key = Object.keys(join)[0] // user
-    const val = join[key] // user_to
+    const key = Object.keys(join)[0] // user, post
+    const val = join[key] // user_to, post_id
     joinQuery = `JOIN ${key} ON ${table}.${val} = ${key}.id`
   }
   // console.log(joinQuery)

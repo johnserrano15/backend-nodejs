@@ -8,11 +8,11 @@ const router = express.Router()
 
 // Routes
 router.get('/like', secure('logged'), postsLiked)
+router.post('/like/:id', secure('logged'), like)
 router.get('/', list)
 router.get('/:id', getPost)
 router.post('/', secure('owner'), upsert)
 router.put('/', secure('owner'), upsert)
-router.post('/:id/like', secure('logged'), like)
 
 // functions
 function list(req, res, next) {
@@ -39,16 +39,16 @@ function upsert(req, res, next) {
     .catch(next)
 }
 
-function postsLiked(req, res, next) {
-  controller.upsert(req.body, req.user.id)
+function like(req, res, next) {
+  controller.like(req.params.id, req.user.id)
     .then(data => {
       response.success(req, res, data, 200)
     })
     .catch(next)
 }
 
-function like(req, res, next) {
-  controller.upsert(req.body, req.user.id)
+function postsLiked(req, res, next) {
+  controller.postsLiked(req.user.id)
     .then(data => {
       response.success(req, res, data, 200)
     })

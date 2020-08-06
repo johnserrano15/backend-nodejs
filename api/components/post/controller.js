@@ -31,9 +31,27 @@ module.exports = function (injectedStore) {
     return store.upsert(TABLA, post)
   }
 
+  function like (id, user) {
+    return store.upsert(TABLA + '_like', {
+      post_id: id,
+      user_id: user
+    })
+  }
+
+  function postsLiked (id) {
+    const join = {}
+    join[TABLA] = 'post_id' // { post: 'post_id' }
+    const query = { user_id: id }
+
+    return store.query(`${TABLA}_like`, query, join)
+  }
+
+
   return {
     list,
     get,
-    upsert
+    upsert,
+    like,
+    postsLiked
   }
 }
