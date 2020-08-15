@@ -23,7 +23,7 @@ function handleCon() {
     }
   })
 
-  connection.on('error', err => {
+  connection.on('error', (err) => {
     console.error('[db err]', err)
     if (err.code === 'PROTOCOL_CONNECTION_LOST') {
       handleCon()
@@ -36,7 +36,7 @@ function handleCon() {
 handleCon()
 
 function list(table, id) {
-  return new Promise( (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     connection.query(`SELECT * FROM ${table}`, (err, data) => {
       if (err) return reject(err)
       resolve(data)
@@ -46,7 +46,7 @@ function list(table, id) {
 
 function get(table, id) {
   return new Promise((resolve, reject) => {
-    connection.query(`SELECT * FROM ${table} WHERE id=${id}`, (err, data) => {
+    connection.query(`SELECT * FROM ${table} WHERE id='${id}'`, (err, data) => {
       if (err) return reject(err)
       resolve(data[0])
     })
@@ -64,10 +64,14 @@ function insert(table, data) {
 
 function update(table, data) {
   return new Promise((resolve, reject) => {
-    connection.query(`UPDATE ${table} SET ? WHERE id=?`, [data, data.id], (err, result) => {
-      if (err) return reject(err)
-      resolve(result)
-    })
+    connection.query(
+      `UPDATE ${table} SET ? WHERE id=?`,
+      [data, data.id],
+      (err, result) => {
+        if (err) return reject(err)
+        resolve(result)
+      }
+    )
   })
 }
 
@@ -80,15 +84,20 @@ function update(table, data) {
 //   }
 // }
 
-const upsert = async (table, payload) => new Promise((resolve, reject) => {
-  connection.query(`INSERT INTO ${table} SET ? ON DUPLICATE KEY UPDATE ?`, [payload, payload], (error, data) => {
-    console.log('UPDATE DATA: ', data)
-    if (error) {
-      return reject(error)
-    }
-    resolve(data)
+const upsert = async (table, payload) =>
+  new Promise((resolve, reject) => {
+    connection.query(
+      `INSERT INTO ${table} SET ? ON DUPLICATE KEY UPDATE ?`,
+      [payload, payload],
+      (error, data) => {
+        console.log('UPDATE DATA: ', data)
+        if (error) {
+          return reject(error)
+        }
+        resolve(data)
+      }
+    )
   })
-})
 
 function query(table, query, join) {
   let joinQuery = ''
@@ -101,11 +110,15 @@ function query(table, query, join) {
   // console.log(joinQuery)
 
   return new Promise((resolve, reject) => {
-    connection.query(`SELECT * FROM ${table} ${joinQuery} WHERE ?`, query, (err, res) => {
-      if (err) return reject(err)
-      if (res.length > 1) resolve(res || [])
-      resolve(res[0] || null)
-    })
+    connection.query(
+      `SELECT * FROM ${table} ${joinQuery} WHERE ?`,
+      query,
+      (err, res) => {
+        if (err) return reject(err)
+        if (res.length > 1) resolve(res || [])
+        resolve(res[0] || null)
+      }
+    )
   })
 }
 
@@ -113,5 +126,5 @@ module.exports = {
   list,
   get,
   upsert,
-  query
+  query,
 }
