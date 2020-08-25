@@ -3,6 +3,8 @@ const express = require('express')
 const response = require('../network/response')
 const Store = require('../store/mysql')
 
+const secure = require('./secure')
+
 const router = express.Router()
 
 router.get('/:table', list)
@@ -26,6 +28,10 @@ async function get(req, res, next) {
 // }
 
 async function upsert(req, res, next) {
+  if (req.params.table === 'post') {
+    // console.log('ok paso')
+    secure('logged', req.body)
+  }
   const datos = await Store.upsert(req.params.table, req.body)
   response.success(req, res, datos, 200)
 }

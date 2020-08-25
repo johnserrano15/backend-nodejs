@@ -9,7 +9,7 @@ function sign(data) {
 }
 
 function verify(token) {
-    return jwt.verify(token, secret)
+  return jwt.verify(token, secret)
 }
 
 const check = {
@@ -24,7 +24,8 @@ const check = {
   },
   logged: function (req) {
     const decoded = decodeHeader(req)
-  }
+    console.log(decoded)
+  },
 }
 
 function getToken(auth) {
@@ -52,5 +53,5 @@ function decodeHeader(req) {
 
 module.exports = {
   sign,
-  check
+  check,
 }

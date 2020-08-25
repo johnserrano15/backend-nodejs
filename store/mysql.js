@@ -84,7 +84,9 @@ function update(table, data) {
 //   }
 // }
 
-const upsert = async (table, payload) =>
+const upsert = async (table, payload) => {
+  // console.log(table)
+  // console.log(payload)
   new Promise((resolve, reject) => {
     connection.query(
       `INSERT INTO ${table} SET ? ON DUPLICATE KEY UPDATE ?`,
@@ -98,6 +100,7 @@ const upsert = async (table, payload) =>
       }
     )
   })
+}
 
 function query(table, query, join) {
   let joinQuery = ''
