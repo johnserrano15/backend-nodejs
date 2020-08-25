@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon api/index.js",
     "dev-mysql": "nodemon mysql/index.js",
-    "dev-post": "nodemon post/index.js"
+    "dev-post": "nodemon post/index.js",
+    "dev-cache": "nodemon cache/index.js"
   },
   "keywords": [],
   "author": "John Serrano <jandreys15@gmail.com> (https://twitter.com/jandrey15)",
