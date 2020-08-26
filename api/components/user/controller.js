@@ -1,16 +1,32 @@
 const { nanoid } = require('nanoid')
-const auth = require('../auth');
+const auth = require('../auth')
+const user = require('.')
 
 const TABLA = 'user'
 
-module.exports = function (injectedStore) {
+module.exports = function (injectedStore, injectedCache) {
   let store = injectedStore
+  let cache = injectedCache
   if (!store) {
     store = require('../../../store/dummy')
   }
 
-  function list() {
-    return store.list(TABLA)
+  if (!cache) {
+    cache = require('../../../store/dummy')
+  }
+
+  async function list() {
+    let users = await cache.list(TABLA)
+
+    if (!users) {
+      console.log('No estaba en caché. Buscando en DB')
+      users = await store.list(TABLA)
+      cache.upsert(TABLA, users)
+    } else {
+      console.log('Nos traemos datos de cache')
+    }
+
+    return users
   }
 
   function get(id) {
@@ -20,7 +36,7 @@ module.exports = function (injectedStore) {
   async function upsert(body) {
     const user = {
       name: body.name,
-      username: body.username
+      username: body.username,
     }
 
     if (body.id) {
@@ -41,17 +57,17 @@ module.exports = function (injectedStore) {
   }
 
   function remove(id) {
-    return store.remove(TABLA, id);
+    return store.remove(TABLA, id)
   }
 
   function follow(from, to) {
     return store.upsert(TABLA + '_follow', {
       user_from: from,
-      user_to: to
+      user_to: to,
     })
   }
 
-  function following (id) {
+  function following(id) {
     const join = {}
     join[TABLA] = 'user_to' // { user: 'user_to' }
     const query = { user_from: id }
@@ -65,6 +81,6 @@ module.exports = function (injectedStore) {
     upsert,
     remove,
     follow,
-    following
+    following,
   }
 }

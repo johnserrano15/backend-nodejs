@@ -23,7 +23,9 @@ function list(table) {
 }
 
 function get(table, id) {
-  //
+  const key = `${table}_${id}`
+
+  return list(key)
 }
 
 async function upsert(table, data) {
@@ -32,7 +34,7 @@ async function upsert(table, data) {
     key = key + '_' + data.id
   }
 
-  client.setex(key, 10, JSON.stringify(data))
+  client.setex(key, 50, JSON.stringify(data))
   return true
 }
 
